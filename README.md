@@ -1,2 +1,2 @@
-# api
+# network-elements library
 

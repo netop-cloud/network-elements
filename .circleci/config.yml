@@ -6,8 +6,7 @@ orbs:
 
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
-    # FIXME
-    working_directory: ~/API_NAME_PLACEHOLDER-api # directory where steps will run
+    working_directory: ~/network-elements # directory where steps will run
     executor: executors/jdk
 
     steps: # a collection of executable commands
