@@ -1,0 +1,47 @@
+version: 2.1 # use CircleCI 2.0
+orbs:
+  commands: netop-cloud/commands@volatile
+  executors: netop-cloud/executors@volatile
+
+
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    # FIXME
+    working_directory: ~/API_NAME_PLACEHOLDER-api # directory where steps will run
+    executor: executors/jdk
+
+    steps: # a collection of executable commands
+      - checkout
+      - commands/setup-tunnel
+      - commands/install-gcloud
+
+      - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: netop-{{ checksum "pom.xml" }}
+
+
+      - run:
+          name: Maven install dependencies
+          command: mvn -s .circleci.settings.xml dependency:go-offline # gets the project dependencies
+
+      - save_cache: # saves the project dependencies
+          paths:
+            - ~/.m2
+          key: netop-{{ checksum "pom.xml" }}
+
+      - run: mvn -s .circleci.settings.xml deploy
+      - store_artifacts:
+          path: target
+
+workflows:
+  version: 2.1
+  run-build:
+    jobs:
+      - build:
+          context:
+            - common
+          filters:
+            branches:
+              only:
+                - master
+                - stage
