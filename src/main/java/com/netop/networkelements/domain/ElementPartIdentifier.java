@@ -8,10 +8,6 @@ import java.util.stream.Collectors;
 public enum ElementPartIdentifier {
     DEVICE_SERIAL("deviceSerial"),
     INTERFACE_NAME("interfaceName"),
-
-    // deprecated: left because of backward compatibility reason, to remove after updating values in measurements db
-    @Deprecated
-    NETWORK_INTERFACE("networkInterface"),
     DEVICE_ELEMENT("deviceElement"),
     VPN_DESTINATION_NAME("vpnDestinationName"),
     SLA_NAME("slaName");
